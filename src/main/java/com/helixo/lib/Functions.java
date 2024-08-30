@@ -37,6 +37,12 @@ public class Functions {
                 return new StringValue(scanner.nextLine());
             }
         });
+
+        functions.put("IntroduceInt", (Function) (Value[] args) -> {
+            try(Scanner scanner = new Scanner(System.in)) {
+                return new NumberValue(scanner.nextInt());
+            }
+        });
     }
 
     public static boolean isExists(String key) {
