@@ -1,10 +1,12 @@
 package com.helixo.lib;
 
 import com.helixo.syntax.value.NumberValue;
+import com.helixo.syntax.value.StringValue;
 import com.helixo.syntax.value.Value;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Functions {
     private static final Map<String, Function> functions;
@@ -28,6 +30,12 @@ public class Functions {
                 System.out.println(arg.asString());
             }
             return NumberValue.ZERO;
+        });
+
+        functions.put("IntroduceLine", (Function) (Value[] args) -> {
+            try(Scanner scanner = new Scanner(System.in)) {
+                return new StringValue(scanner.nextLine());
+            }
         });
     }
 
