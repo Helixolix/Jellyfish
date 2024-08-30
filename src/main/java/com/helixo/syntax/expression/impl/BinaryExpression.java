@@ -1,6 +1,7 @@
 package com.helixo.syntax.expression.impl;
 
 import com.helixo.syntax.expression.Expression;
+import com.helixo.syntax.value.ArrayValue;
 import com.helixo.syntax.value.NumberValue;
 import com.helixo.syntax.value.StringValue;
 import com.helixo.syntax.value.Value;
@@ -23,7 +24,7 @@ public class BinaryExpression implements Expression {
         final double number1 = expr1.eval().asNumber();
         final double number2 = expr2.eval().asNumber();
 
-        if (value1 instanceof StringValue) {
+        if ((value1 instanceof StringValue) || (value1 instanceof ArrayValue)) {
             final String str1 = value1.asString();
 
             switch (operation) {

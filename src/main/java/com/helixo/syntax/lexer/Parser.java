@@ -87,12 +87,18 @@ public final class Parser {
     }
 
     private Statement assignmentStatement() {
-        // WORD EQ
-        final Token current = get(0);
-        if (match(TokenType.WORD) && get(0).getType() == TokenType.EQ) {
-            final String variable = current.getText();
+        if (lookMatch(0, TokenType.WORD) && lookMatch(1, TokenType.EQ)) {
+            final String variable = consume(TokenType.WORD).getText();
             consume(TokenType.EQ);
             return new AssignmentStatement(variable, expression());
+        }
+        if (lookMatch(0, TokenType.WORD) && lookMatch(1, TokenType.LBRACE)) {
+            final String variable = consume(TokenType.WORD).getText();
+            consume(TokenType.LBRACE);
+            Expression index = expression();
+            consume(TokenType.RBRACE);
+            consume(TokenType.EQ);
+            return new ArrayAssigmentStatement(variable, index, expression());
         }
         throw new RuntimeException("Unknown statement");
     }
@@ -124,9 +130,9 @@ public final class Parser {
 
     private Statement forStatement() {
         final Statement initialization = assignmentStatement();
-        consume(TokenType.COMMA);
+        consume(TokenType.TWO_DOT);
         final Expression termination = expression();
-        consume(TokenType.COMMA);
+        consume(TokenType.TWO_DOT);
         final Statement increment = assignmentStatement();
         final Statement statement = statementOrBlock();
         return new ForStatement(initialization, termination, increment, statement);
@@ -138,7 +144,7 @@ public final class Parser {
         final List<String> argNames = new ArrayList<>();
         while (!match(TokenType.RPAREN)) {
             argNames.add(consume(TokenType.WORD).getText());
-            match(TokenType.COMMA);
+            match(TokenType.TWO_DOT);
         }
         final Statement body = statementOrBlock();
         return new FunctionalMathodStatement(name, argNames, body);
@@ -284,6 +290,12 @@ public final class Parser {
         if (get(0).getType() == TokenType.WORD && get(1).getType() == TokenType.LPAREN) {
             return function();
         }
+        if (lookMatch(0, TokenType.WORD )&& lookMatch(1, TokenType.LBRACE)) {
+            return element();
+        }
+        if (lookMatch(0, TokenType.LBRACE)) {
+            return array();
+        }
         if (match(TokenType.WORD)) {
             return new ConstantExpression(current.getText());
         }
@@ -296,6 +308,28 @@ public final class Parser {
             return result;
         }
         throw new RuntimeException("Unknown expression");
+    }
+
+    private Expression array() {
+        consume(TokenType.LBRACE);
+        List<Expression> elements = new ArrayList<>();
+        while (!match(TokenType.RBRACE)) {
+            elements.add(expression());
+            match(TokenType.TWO_DOT);
+        }
+        return new ArrayExpression(elements);
+    }
+
+    private Expression element() {
+        final String variable = consume(TokenType.WORD).getText();
+        List<Expression> indices = new ArrayList<>();
+
+        do {
+            consume(TokenType.LBRACE);
+            indices.add(expression());
+            consume(TokenType.RBRACE);
+        }while (lookMatch(0, TokenType.RBRACE));
+        return new ArrayAccessExpression(variable, indices);
     }
 
     private Token consume(TokenType type) {
@@ -316,5 +350,9 @@ public final class Parser {
         final int position = pos + relativePosition;
         if (position >= size) return EOF;
         return tokens.get(position);
+    }
+
+    private boolean lookMatch(int pos, TokenType type) {
+        return get(pos).getType() == type;
     }
 }
