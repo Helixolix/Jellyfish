@@ -6,9 +6,11 @@ import com.helixo.syntax.statement.*;
 import com.helixo.syntax.statement.impl.*;
 import com.helixo.syntax.statement.impl.exception.BreakStatement;
 import com.helixo.syntax.statement.impl.exception.ContinueStatement;
+import com.helixo.syntax.statement.impl.exception.ReturnStatement;
 import com.helixo.syntax.tokens.Token;
 import com.helixo.syntax.tokens.TokenType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class Parser {
@@ -60,8 +62,8 @@ public final class Parser {
         if (match(TokenType.WHILE)) {
             return whileStatement();
         }
-        if (match(TokenType.FOR)) {
-            return forStatement();
+        if (match(TokenType.DO)) {
+            return doWhileStatement();
         }
         if (match(TokenType.BREAK)) {
             return new BreakStatement();
@@ -69,14 +71,21 @@ public final class Parser {
         if (match(TokenType.CONTINUE)) {
             return new ContinueStatement();
         }
-        if (match(TokenType.DO)) {
-            return doWhileStatement();
+        if (match(TokenType.RETURN)) {
+            return new ReturnStatement(expression());
+        }
+        if (match(TokenType.FOR)) {
+            return forStatement();
+        }
+        if (match(TokenType.METHOD)) {
+            return functionDefine();
         }
         if (get(0).getType() == TokenType.WORD && get(1).getType() == TokenType.LPAREN) {
             return new FunctionalStatement(function());
         }
         return assignmentStatement();
     }
+
     private Statement assignmentStatement() {
         // WORD EQ
         final Token current = get(0);
@@ -115,14 +124,36 @@ public final class Parser {
 
     private Statement forStatement() {
         final Statement initialization = assignmentStatement();
-        consume(TokenType.TWO_DOT);
+        consume(TokenType.COMMA);
         final Expression termination = expression();
-        consume(TokenType.TWO_DOT);
+        consume(TokenType.COMMA);
         final Statement increment = assignmentStatement();
         final Statement statement = statementOrBlock();
         return new ForStatement(initialization, termination, increment, statement);
     }
 
+    private FunctionalMathodStatement functionDefine() {
+        final String name = consume(TokenType.WORD).getText();
+        consume(TokenType.LPAREN);
+        final List<String> argNames = new ArrayList<>();
+        while (!match(TokenType.RPAREN)) {
+            argNames.add(consume(TokenType.WORD).getText());
+            match(TokenType.COMMA);
+        }
+        final Statement body = statementOrBlock();
+        return new FunctionalMathodStatement(name, argNames, body);
+    }
+
+    private FunctionalExpression function() {
+        final String name = consume(TokenType.WORD).getText();
+        consume(TokenType.LPAREN);
+        final FunctionalExpression function = new FunctionalExpression(name);
+        while (!match(TokenType.RPAREN)) {
+            function.addArgument(expression());
+            match(TokenType.TWO_DOT);
+        }
+        return function;
+    }
 
     private Expression expression() {
         return logicalOr();
@@ -265,19 +296,6 @@ public final class Parser {
             return result;
         }
         throw new RuntimeException("Unknown expression");
-    }
-
-    private FunctionalExpression function() {
-       String name = consume(TokenType.WORD).getText();
-       FunctionalExpression function = new FunctionalExpression(name);
-
-       consume(TokenType.LPAREN);
-
-       while (!match(TokenType.RPAREN)) {
-           function.addArgument(expression());
-           match(TokenType.TWO_DOT);
-       }
-       return function;
     }
 
     private Token consume(TokenType type) {

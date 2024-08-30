@@ -17,6 +17,7 @@ public enum TokenType {
    DO,
    BREAK,
    CONTINUE,
+   METHOD,
 
    PLUS, // +
    MINUS, // -
@@ -34,6 +35,8 @@ public enum TokenType {
    BARBAR,
    AMP,
    APMAMP,
+   COMMA,
+   RETURN,
 
    LPAREN, // (
    RPAREN, // )

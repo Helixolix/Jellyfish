@@ -1,6 +1,8 @@
 package com.helixo.syntax.expression.impl;
 
+import com.helixo.lib.Function;
 import com.helixo.lib.Functions;
+import com.helixo.lib.UserMethodFunction;
 import com.helixo.syntax.expression.Expression;
 import com.helixo.syntax.value.Value;
 
@@ -14,7 +16,7 @@ public class FunctionalExpression implements Expression {
 
     public FunctionalExpression(String name) {
         this.name = name;
-        this.arguments = new ArrayList<>();
+        arguments = new ArrayList<>();
     }
 
     public FunctionalExpression(String name, List<Expression> arguments) {
@@ -28,18 +30,30 @@ public class FunctionalExpression implements Expression {
 
     @Override
     public Value eval() {
-        int size = arguments.size();
-        Value[] values = new Value[size];
-
-
+        final int size = arguments.size();
+        final Value[] values = new Value[size];
         for (int i = 0; i < size; i++) {
             values[i] = arguments.get(i).eval();
         }
-        return Functions.get(name).execute(values);
+
+        final Function function = Functions.get(name);
+        if (function instanceof UserMethodFunction) {
+            final UserMethodFunction userFunction = (UserMethodFunction) function;
+            if (size != userFunction.getArgsCount()) throw new RuntimeException("Args count mismatch");
+
+            VariabletExpression.push();
+            for (int i = 0; i < size; i++) {
+                VariabletExpression.set(userFunction.getArgsName(i), values[i]);
+            }
+            final Value result = userFunction.execute(values);
+            VariabletExpression.pop();
+            return result;
+        }
+        return function.execute(values);
     }
 
     @Override
     public String toString() {
-        return "";
+        return name + "(" + arguments.toString() + ")";
     }
 }

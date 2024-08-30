@@ -10,7 +10,7 @@ import java.util.Map;
 
 public final class Lexer {
 
-    private static final String OPERATOR_CHARS = "+-*/(){}=<>!&|:";
+    private static final String OPERATOR_CHARS = "+-*/(){}=<>!&|:,";
 
     private static final Map<String, TokenType> OPERATORS;
     static {
@@ -39,6 +39,7 @@ public final class Lexer {
 
         OPERATORS.put("&&", TokenType.APMAMP);
         OPERATORS.put("||", TokenType.BARBAR);
+        OPERATORS.put(",", TokenType.COMMA);
     }
 
     private final String input;
@@ -153,7 +154,8 @@ public final class Lexer {
             case "for": addToken(TokenType.FOR); break;
             case "break": addToken(TokenType.BREAK); break;
             case "continue": addToken(TokenType.CONTINUE); break;
-
+            case "method": addToken(TokenType.METHOD); break;
+            case "return": addToken(TokenType.RETURN); break;
             default:
                 addToken(TokenType.WORD, word);
                 break;

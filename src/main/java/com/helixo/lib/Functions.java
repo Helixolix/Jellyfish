@@ -7,21 +7,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Functions {
-    private static Map<String, Function> functions;
+    private static final Map<String, Function> functions;
 
     static {
         functions = new HashMap<>();
+        functions.put("sin", new Function() {
 
-        functions.put("sin", args -> {
-            if (args.length != 1) throw new RuntimeException("One args expected");
-            return new NumberValue(Math.sin(args[0].asNumber()));
+            @Override
+            public Value execute(Value... args) {
+                if (args.length != 1) throw new RuntimeException("One arg expected");
+                return new NumberValue(Math.sin(args[0].asNumber()));
+            }
         });
-
-        functions.put("cos", args -> {
-            if (args.length != 1) throw new RuntimeException("One args expected");
+        functions.put("cos", (Function) (Value... args) -> {
+            if (args.length != 1) throw new RuntimeException("One arg expected");
             return new NumberValue(Math.cos(args[0].asNumber()));
         });
+        functions.put("echo", args -> {
+            for (Value arg : args) {
+                System.out.println(arg.asString());
+            }
+            return NumberValue.ZERO;
+        });
     }
+
     public static boolean isExists(String key) {
         return functions.containsKey(key);
     }
@@ -31,7 +40,7 @@ public class Functions {
         return functions.get(key);
     }
 
-    public static void set(String key, Function function){
+    public static void set(String key, Function function) {
         functions.put(key, function);
     }
 }
