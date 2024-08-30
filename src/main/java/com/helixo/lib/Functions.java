@@ -43,6 +43,12 @@ public class Functions {
                 return new NumberValue(scanner.nextInt());
             }
         });
+
+//        functions.put("length", (Function) (Value[] args) -> {
+//            try(Scanner scanner = new Scanner(System.in)) {
+//                return new NumberValue(scanner.nextLine().length());
+//            }
+//        });
     }
 
     public static boolean isExists(String key) {

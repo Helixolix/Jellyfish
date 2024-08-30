@@ -78,7 +78,7 @@ public final class Parser {
             return forStatement();
         }
         if (match(TokenType.METHOD)) {
-            return functionDefine();
+            return functionMathod();
         }
         if (get(0).getType() == TokenType.WORD && get(1).getType() == TokenType.LPAREN) {
             return new FunctionalStatement(function());
@@ -132,7 +132,7 @@ public final class Parser {
         return new ForStatement(initialization, termination, increment, statement);
     }
 
-    private FunctionalMathodStatement functionDefine() {
+    private FunctionalMathodStatement functionMathod() {
         final String name = consume(TokenType.WORD).getText();
         consume(TokenType.LPAREN);
         final List<String> argNames = new ArrayList<>();
