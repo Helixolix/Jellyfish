@@ -11,6 +11,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class TestMain {
+
+    public static final String ANSI_RED = "\u001B[31m";
+
     public static void main(String[] args) {
         try {
             // загрузка файла .dil из ресов
@@ -18,10 +21,10 @@ public class TestMain {
             InputStream inputStream = TestMain.class.getResourceAsStream(resourcePath);
 
             if (inputStream == null) {
-                System.out.println("Ошибка: Ресурс не найден: " + resourcePath);
+                System.out.println(ANSI_RED + "Ошибка: Ресурс не найден: " + resourcePath);
                 return;
             }
-
+            
             String input = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 
             // токенизация содержимого файла
@@ -32,9 +35,9 @@ public class TestMain {
             program.execute();
 
         } catch (IOException e) {
-            System.out.println("Ошибка при чтении ресурса: " + e.getMessage());
+            System.out.println(ANSI_RED + "Ошибка при чтении ресурса: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("Ошибка при выполнении программы: " + e.getMessage());
+            System.out.println(ANSI_RED + "Ошибка при выполнении программы: " + e.getMessage());
         }
     }
 }

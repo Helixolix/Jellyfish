@@ -3,13 +3,13 @@ setlocal
 
 if "%~1"=="" (
     echo Specify the path to the .dil file.
-    echo Usage: run "C:\Users\filip\Documents\DerlaryLenguage-master\target\DerlaryLenguage-1.0-SNAPSHOT.jar" "example.dil"
+    echo Usage: run "C:\Users\Noutb\Downloads\DerlaryLenguage\src\main\resources\DerlaryLenguage-1.0-SNAPSHOT.jar" "example.dil"
     goto :eof
 )
 
 if "%~2"=="" (
     echo Specify the path to the .dil file.
-    echo Usage: run "C:\Users\filip\Documents\DerlaryLenguage-master\target\DerlaryLenguage-1.0-SNAPSHOT.jar" "example.dil"
+    echo Usage: run "C:\Users\Noutb\Downloads\DerlaryLenguage\src\main\resources\DerlaryLenguage-1.0-SNAPSHOT.jar" "example.dil"
     goto :eof
 )
 

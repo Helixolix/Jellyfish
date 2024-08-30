@@ -51,6 +51,9 @@ public final class Parser {
         if (match(TokenType.WITHDRAW)) {
             return new PrintStatement(expression());
         }
+        if (match(TokenType.WITHDRAWLN)) {
+            return new PrintLnStatement(expression());
+        }
         if (match(TokenType.IF)) {
             return ifElse();
         }
@@ -68,6 +71,9 @@ public final class Parser {
         }
         if (match(TokenType.DO)) {
             return doWhileStatement();
+        }
+        if (get(0).getType() == TokenType.WORD && get(1).getType() == TokenType.LPAREN) {
+            return new FunctionalStatement(function());
         }
         return assignmentStatement();
     }
@@ -238,20 +244,40 @@ public final class Parser {
 
     private Expression primary() {
         final Token current = get(0);
-        if (match(TokenType.NUMBER)) return new ValueExpression(Double.parseDouble(current.getText()));
-
-        if (match(TokenType.WORD)) return new ConstantExpression(current.getText());
-
-        if (match(TokenType.HEX_NUMBER)) return new ValueExpression(Long.parseLong(current.getText(), 16));
-
-        if (match(TokenType.TEXT)) return new ValueExpression(current.getText());
-
+        if (match(TokenType.NUMBER)) {
+            return new ValueExpression(Double.parseDouble(current.getText()));
+        }
+        if (match(TokenType.HEX_NUMBER)) {
+            return new ValueExpression(Long.parseLong(current.getText(), 16));
+        }
+        if (get(0).getType() == TokenType.WORD && get(1).getType() == TokenType.LPAREN) {
+            return function();
+        }
+        if (match(TokenType.WORD)) {
+            return new ConstantExpression(current.getText());
+        }
+        if (match(TokenType.TEXT)) {
+            return new ValueExpression(current.getText());
+        }
         if (match(TokenType.LPAREN)) {
             Expression result = expression();
             match(TokenType.RPAREN);
             return result;
         }
         throw new RuntimeException("Unknown expression");
+    }
+
+    private FunctionalExpression function() {
+       String name = consume(TokenType.WORD).getText();
+       FunctionalExpression function = new FunctionalExpression(name);
+
+       consume(TokenType.LPAREN);
+
+       while (!match(TokenType.RPAREN)) {
+           function.addArgument(expression());
+           match(TokenType.TWO_DOT);
+       }
+       return function;
     }
 
     private Token consume(TokenType type) {

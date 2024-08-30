@@ -9,6 +9,7 @@ public enum TokenType {
    //Keyword
    INPUT,
    WITHDRAW,
+   WITHDRAWLN,
    IF,
    ELSE,
    WHILE,

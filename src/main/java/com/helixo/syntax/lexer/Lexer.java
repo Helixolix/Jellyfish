@@ -145,6 +145,7 @@ public final class Lexer {
         final String word = buffer.toString();
         switch (word) {
             case "Withdraw": addToken(TokenType.WITHDRAW); break;
+            case "WithdrawLn": addToken(TokenType.WITHDRAWLN); break;
             case "if": addToken(TokenType.IF); break;
             case "else": addToken(TokenType.ELSE); break;
             case "while": addToken(TokenType.WHILE); break;
@@ -152,7 +153,6 @@ public final class Lexer {
             case "for": addToken(TokenType.FOR); break;
             case "break": addToken(TokenType.BREAK); break;
             case "continue": addToken(TokenType.CONTINUE); break;
-
 
             default:
                 addToken(TokenType.WORD, word);

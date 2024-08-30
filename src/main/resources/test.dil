@@ -1,2 +1,5 @@
-a = 0 + 2 + 3 + 6.5;
-Withdraw(a);
+
+for i = 0 : i < 10 : i = i + 1 {
+  WithdrawLn("sin = " + cos(i));
+}
+

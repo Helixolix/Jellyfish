@@ -7,7 +7,7 @@ public class Main {
         try {
             TestMain.main(args);
         } catch (Exception e) {
-            System.out.println("Ошибка при выполнении программы: " + e.getMessage());
+            System.out.println(TestMain.ANSI_RED + "Ошибка при выполнении программы: " + e.getMessage());
             e.printStackTrace();
         }
     }
