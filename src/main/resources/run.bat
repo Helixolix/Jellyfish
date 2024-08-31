@@ -2,21 +2,28 @@
 setlocal
 
 if "%~1"=="" (
-    echo Specify the path to the .jfl file.
-    echo Usage: jfl "example.jfl"
+    echo Specify the path to the .dil file.
+    echo Usage: run "C:\Users\Noutb\Downloads\DerlaryLenguage\src\main\resources\DerlaryLenguage-1.0-SNAPSHOT.jar" "example.dil"
     goto :eof
 )
 
-set "jflpath=%~1"
+if "%~2"=="" (
+    echo Specify the path to the .dil file.
+    echo Usage: run "C:\Users\Noutb\Downloads\DerlaryLenguage\src\main\resources\DerlaryLenguage-1.0-SNAPSHOT.jar" "example.dil"
+    goto :eof
+)
 
-if exist "%jflpath%" (
-    if /i "%~x1"==".jfl" (
-        java -jar "%~dp0jfl.jar" "%jflpath%"
+set "jarpath=%~1"
+set "dilpath=%~2"
+
+if exist "%jarpath%" (
+    if exist "%dilpath%" (
+        java -jar "%jarpath%" "%dilpath%"
     ) else (
-        echo The specified file is not a .jfl file: %jflpath%
+        echo The specified .dil file was not found: %dilpath%
     )
 ) else (
-    echo The specified .jfl file was not found: %jflpath%
+    echo The specified JAR file was not found: %jarpath%
 )
 
 endlocal
