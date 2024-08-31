@@ -16,21 +16,21 @@ public class TestMain {
 
     public static void main(String[] args) {
         try {
-            // загрузка файла .dil из ресов
-            String resourcePath = "/test.dil";
+
+            String resourcePath = "/test.jfl";
             InputStream inputStream = TestMain.class.getResourceAsStream(resourcePath);
 
             if (inputStream == null) {
                 System.out.println(ANSI_RED + "Ошибка: Ресурс не найден: " + resourcePath);
                 return;
             }
-            
+
             String input = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 
-            // токенизация содержимого файла
+
             List<Token> tokens = new Lexer(input).tokenize();
 
-            // паринг токенов и выполнение программы
+
             Statement program = new Parser(tokens).parse();
             program.execute();
 
