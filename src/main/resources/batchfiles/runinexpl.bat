@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-set "jarpath=C:\Users\filip\IdeaProjects\Jellyfish2\target\DerlaryLenguage-1.0-SNAPSHOT.jar"
+set "jarpath="C:\Program Files (x86)\JFL\DerlaryLenguage-1.0-SNAPSHOT.jar"
 
 set "jflpath=%~1"
 
