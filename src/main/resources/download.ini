@@ -1,0 +1,22 @@
+[Setup]
+AppName=JFL Application
+AppVersion=1.0
+DefaultDirName={pf}\JFL
+DefaultGroupName=JFL
+OutputDir=.
+OutputBaseFilename=JFL_Installer
+Compression=lzma
+SolidCompression=yes
+
+[Files]
+Source: "C:\Users\filip\IdeaProjects\Jellyfish2\src\main\resources\jfl\*.jfl"; DestDir: "{app}\jfl"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\filip\IdeaProjects\Jellyfish2\src\main\resources\batchfiles\runinexpl.bat"; DestDir: "{app}\batchfiles"; Flags: ignoreversion
+Source: "C:\Users\filip\IdeaProjects\Jellyfish2\src\main\resources\batchfiles\run.bat"; DestDir: "{app}\batchfiles"; Flags: ignoreversion
+
+[Registry]
+Root: HKCR; Subkey: ".jfl"; ValueType: string; ValueData: "JFL File"; Flags: uninsdeletevalue
+Root: HKCR; Subkey: "JFL File\shell\open\command"; ValueType: string; ValueData: """{app}\batchfiles\runinexpl.bat"" ""%1"""; Flags: uninsdeletevalue
+
+[Run]
+Filename: "{cmd}"; Parameters: "/C setx PATH ""{app}\batchfiles;%PATH%"""; Flags: runhidden
+Filename: "{app}\batchfiles\runinexpl.bat"; Parameters: ""; Flags: nowait postinstall skipifsilent

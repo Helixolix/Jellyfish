@@ -6,7 +6,8 @@ import com.helixo.syntax.statement.Statement;
 import com.helixo.syntax.tokens.Token;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -15,27 +16,28 @@ public class TestMain {
     public static final String ANSI_RED = "\u001B[31m";
 
     public static void main(String[] args) {
-        try {
-            // загрузка файла .dil из ресов
-            String resourcePath = "/test.dil";
-            InputStream inputStream = TestMain.class.getResourceAsStream(resourcePath);
+        String input;
 
-            if (inputStream == null) {
-                System.out.println(ANSI_RED + "Ошибка: Ресурс не найден: " + resourcePath);
+        if (args.length > 0) {
+
+            String filePath = args[0];
+
+            try {
+
+                input = new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                System.out.println(ANSI_RED + "Ошибка при чтении файла: " + e.getMessage());
                 return;
             }
+        } else {
+            System.out.println(ANSI_RED + "Ошибка: Не указан путь к .jfl файлу.");
+            return;
+        }
 
-            String input = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-
-            // токенизация содержимого файла
+        try {
             List<Token> tokens = new Lexer(input).tokenize();
-
-            // паринг токенов и выполнение программы
             Statement program = new Parser(tokens).parse();
             program.execute();
-
-        } catch (IOException e) {
-            System.out.println(ANSI_RED + "Ошибка при чтении ресурса: " + e.getMessage());
         } catch (Exception e) {
             System.out.println(ANSI_RED + "Ошибка при выполнении программы: " + e.getMessage());
         }
