@@ -1,1 +1,14 @@
-Withdraw("dcs");
+create_New_File("C:\\Users\\Noutb\\Downloads\\DerlaryLenguage\\src\\main\\resources\\еуыеее.txt");
+sleep(1000);
+
+WithdrawLn("Создан файл");
+
+Write_File("C:\\Users\\Noutb\\Downloads\\DerlaryLenguage\\src\\main\\resources\\еуыеее.txt" : "ttttttttt");
+
+sleep(1000);
+
+WithdrawLn("Записанно в файл");
+
+sleep(1000);
+
+WithdrawLn(Read_File("C:\\Users\\Noutb\\Downloads\\DerlaryLenguage\\src\\main\\resources\\еуыеее.txt"));

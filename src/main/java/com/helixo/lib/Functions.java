@@ -9,6 +9,12 @@ import com.helixo.syntax.value.Value;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.FilteredImageSource;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -35,16 +41,17 @@ public class Functions {
             return NumberValue.ZERO;
         });
 
-        functions.put("IntroduceLine", (Value[] args) -> {
+        functions.put("Introduce_Line", (Value[] args) -> {
             try(Scanner scanner = new Scanner(System.in)) {
-                return new StringValue(scanner.nextLine());
+                String a = scanner.nextLine();
+                return new StringValue(a);
             }
         });
 
-        functions.put("IntroduceInt", (Value[] args) -> {
-            try(Scanner scanner = new Scanner(System.in)) {
-                return new NumberValue(scanner.nextInt());
-            }
+        functions.put("Introduce_Int", (Value[] args) -> {
+            Scanner scanner = new Scanner(System.in);
+                int a = scanner.nextInt();
+                return new NumberValue(a);
         });
 
         functions.put("many", new Function() {
@@ -75,11 +82,54 @@ public class Functions {
             return new NumberValue(random.nextInt((int) args[0].asNumber(), (int) args[1].asNumber()));
         });
 
-//        functions.put("length", (Function) (Value[] args) -> {
-//            try(Scanner scanner = new Scanner(System.in)) {
-//                return new NumberValue(scanner.nextLine().length());
-//            }
-//        });
+        functions.put("Length", (Value[] args) -> {
+            int a = args[0].asString().length();
+            return new NumberValue(a);
+        });
+
+        functions.put("sleep", (Value[] args) -> {
+            try {
+                Thread.sleep((long) args[0].asNumber());
+                return NumberValue.ZERO;
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        functions.put("Write_File", (Value[] args) -> {
+            StringValue path = (StringValue) args[0];
+            StringValue content = (StringValue) args[1];
+            try {
+                Files.write(Paths.get(path.asString()), content.asString().getBytes(StandardCharsets.UTF_8));
+                return NumberValue.ZERO;
+            } catch (IOException e) {
+                throw new RuntimeException("Error writing file: " + e.getMessage());
+            }
+        });
+
+        functions.put("Read_File", (Value[] args) -> {
+            StringValue path = (StringValue) args[0];
+            try {
+                String content = Files.readString(Paths.get(path.asString()));
+                return new StringValue(content);
+            } catch (IOException e) {
+                throw new RuntimeException("Error reading file: " + e.getMessage());
+            }
+        });
+
+        functions.put("new_Throw", (Value[] args) -> {
+           throw new RuntimeException(args[0].asString());
+        });
+
+        functions.put("create_New_File", (Value[] args) -> {
+            StringValue path = (StringValue) args[0];
+            try {
+                Files.createFile(Paths.get(path.asString()));
+                return NumberValue.ZERO;
+            } catch (IOException e) {
+                throw new RuntimeException("Error creating file: " + e.getMessage());
+            }
+        });
     }
 
     public static boolean isExists(String key) {

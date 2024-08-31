@@ -18,6 +18,7 @@ public enum TokenType {
    BREAK,
    CONTINUE,
    METHOD,
+   TAKE,
 
    PLUS, // +
    MINUS, // -
