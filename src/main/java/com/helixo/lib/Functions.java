@@ -117,7 +117,7 @@ public class Functions {
             }
         });
 
-        functions.put("new_Throw", (Value[] args) -> {
+        functions.put("Throw", (Value[] args) -> {
            throw new RuntimeException(args[0].asString());
         });
 
