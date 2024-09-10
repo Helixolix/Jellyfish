@@ -5,6 +5,9 @@ import com.helixo.syntax.value.ArrayValue;
 import com.helixo.syntax.value.NumberValue;
 import com.helixo.syntax.value.StringValue;
 import com.helixo.syntax.value.Value;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,29 +57,6 @@ public class Functions {
                 return new NumberValue(a);
         });
 
-        functions.put("many", new Function() {
-            @Override
-            public Value execute(Value... args) {
-             return createArray(args, 0);
-            }
-
-            private ArrayValue createArray(Value[] args, int index) {
-                int size = (int) args[index].asNumber();
-                int last = args.length;
-                ArrayValue array = new ArrayValue(size);
-                if (index == last) {
-                    for (int i = 0; i < size; i++) {
-                        array.set(i, NumberValue.ZERO);
-                    }
-                } else if (index < last) {
-                    for (int i = 0; i < size; i++) {
-                        array.set(i, createArray(args, index + 1));
-                    }
-                }
-                return array;
-            }
-        });
-
         functions.put("random", (Value[] args) -> {
             Random random = new Random();
             return new NumberValue(random.nextInt((int) args[0].asNumber(), (int) args[1].asNumber()));
@@ -94,6 +74,17 @@ public class Functions {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+        });
+
+        functions.put("Window", (Value[] args) -> {
+            Stage stage = new Stage();
+            Pane pane = new Pane();
+            Scene scene = new Scene(pane, args[0].asNumber(), args[1].asNumber());
+            stage.setTitle(args[2].asString());
+            stage.setScene(scene);
+            stage.show();
+
+            return NumberValue.ZERO;
         });
 
         functions.put("Write_File", (Value[] args) -> {

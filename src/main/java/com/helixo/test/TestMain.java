@@ -10,36 +10,40 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Scanner;
 
 public class TestMain {
 
     public static final String ANSI_RED = "\u001B[31m";
 
+
     public static void main(String[] args) {
         String input;
 
-        if (args.length > 0) {
+        Scanner scanner = new Scanner(System.in);
+        String path = scanner.nextLine();
 
-            String filePath = args[0];
+            if (args.length > 0) {
 
-            try {
 
-                input = new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
-            } catch (IOException e) {
-                System.out.println(ANSI_RED + "Ошибка при чтении файла: " + e.getMessage());
+                try {
+
+                    input = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
+                } catch (IOException e) {
+                    System.out.println(ANSI_RED + "Ошибка при чтении файла: " + e.getMessage());
+                    return;
+                }
+            } else {
+                System.out.println(ANSI_RED + "Ошибка: Не указан путь к .jfl файлу.");
                 return;
             }
-        } else {
-            System.out.println(ANSI_RED + "Ошибка: Не указан путь к .jfl файлу.");
-            return;
-        }
 
-        try {
-            List<Token> tokens = new Lexer(input).tokenize();
-            Statement program = new Parser(tokens).parse();
-            program.execute();
-        } catch (Exception e) {
-            System.out.println(ANSI_RED + "Ошибка при выполнении программы: " + e.getMessage());
+            try {
+                List<Token> tokens = new Lexer(input).tokenize();
+                Statement program = new Parser(tokens).parse();
+                program.execute();
+            } catch (Exception e) {
+                System.out.println(ANSI_RED + "Ошибка при выполнении программы: " + e.getMessage());
+            }
         }
     }
-}
