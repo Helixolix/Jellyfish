@@ -16,18 +16,21 @@ public class TestMain {
 
     public static final String ANSI_RED = "\u001B[31m";
 
+    public static Scanner scanner1;
 
     public static void main(String[] args) {
         String input;
 
-        Scanner scanner = new Scanner(System.in);
-        String path = scanner.nextLine();
+        while (true) {
+            scanner1 = new Scanner(System.in);
+            String path = scanner1.nextLine();
+
+            if ("stop".equals(path)){
+                break;
+            }
 
             if (args.length > 0) {
-
-
                 try {
-
                     input = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
                 } catch (IOException e) {
                     System.out.println(ANSI_RED + "Ошибка при чтении файла: " + e.getMessage());
@@ -47,3 +50,4 @@ public class TestMain {
             }
         }
     }
+}

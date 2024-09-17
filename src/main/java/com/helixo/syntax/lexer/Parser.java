@@ -80,10 +80,17 @@ public final class Parser {
         if (match(TokenType.METHOD)) {
             return functionMathod();
         }
+        if (match(TokenType.TAKE)) {
+            return importTake();
+        }
         if (get(0).getType() == TokenType.WORD && get(1).getType() == TokenType.LPAREN) {
             return new FunctionalStatement(function());
         }
         return assignmentStatement();
+    }
+
+    private Statement importTake() {
+        return null;
     }
 
     private Statement assignmentStatement() {
@@ -120,6 +127,8 @@ public final class Parser {
         final Statement statement = statementOrBlock();
         return new WhileStatement(condition, statement);
     }
+
+
 
     private Statement doWhileStatement() {
         final Statement statement = statementOrBlock();

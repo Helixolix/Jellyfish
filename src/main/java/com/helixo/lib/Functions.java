@@ -25,6 +25,7 @@ import java.util.Scanner;
 
 public class Functions {
     private static final Map<String, Function> functions;
+    private static JFrame jFrame;
 
     static {
         functions = new HashMap<>();
@@ -55,6 +56,21 @@ public class Functions {
             Scanner scanner = new Scanner(System.in);
                 int a = scanner.nextInt();
                 return new NumberValue(a);
+        });
+
+        functions.put("Button", (Value[] args) -> {
+            Button button = new Button(args[0].asString());
+            button.setSize((int) args[1].asNumber(), (int) args[2].asNumber());
+            jFrame.add(button);
+            return NumberValue.ZERO;
+        });
+
+        functions.put("Win", (Value[] args) -> {
+            jFrame = new JFrame(args[0].asString());
+            jFrame.setIconImage(new ImageIcon("C:\\Users\\Noutb\\Downloads\\Jellyfish\\src\\main\\resources\\logo.jpg").getImage());
+            jFrame.setSize((int) args[1].asNumber(), (int) args[2].asNumber());
+            jFrame.show();
+            return NumberValue.ZERO;
         });
 
         functions.put("random", (Value[] args) -> {
@@ -110,6 +126,22 @@ public class Functions {
 
         functions.put("Throw", (Value[] args) -> {
            throw new RuntimeException(args[0].asString());
+        });
+
+        functions.put("To_Int", (Value[] args) -> {
+            if (args.length != 1) throw new RuntimeException("One arg expected");
+            StringValue str = (StringValue) args[0];
+            try {
+                int number = Integer.parseInt(str.asString());
+                return new NumberValue(number);
+            } catch (NumberFormatException e) {
+                throw new RuntimeException("Invalid string format for integer conversion: " + e.getMessage());
+            }
+        });
+
+        functions.put("To_String", (Value[] args) -> {
+            if (args.length != 1) throw new RuntimeException("One arg expected");
+            return new StringValue(String.valueOf(args[0].asNumber()));
         });
 
         functions.put("create_New_File", (Value[] args) -> {
