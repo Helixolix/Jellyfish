@@ -25,7 +25,7 @@ import java.util.Scanner;
 
 public class Functions {
     private static final Map<String, Function> functions;
-    private static JFrame jFrame;
+    private static JFrame window;
 
     static {
         functions = new HashMap<>();
@@ -58,21 +58,6 @@ public class Functions {
                 return new NumberValue(a);
         });
 
-        functions.put("Button", (Value[] args) -> {
-            Button button = new Button(args[0].asString());
-            button.setSize((int) args[1].asNumber(), (int) args[2].asNumber());
-            jFrame.add(button);
-            return NumberValue.ZERO;
-        });
-
-        functions.put("Win", (Value[] args) -> {
-            jFrame = new JFrame(args[0].asString());
-            jFrame.setIconImage(new ImageIcon("C:\\Users\\Noutb\\Downloads\\Jellyfish\\src\\main\\resources\\logo.jpg").getImage());
-            jFrame.setSize((int) args[1].asNumber(), (int) args[2].asNumber());
-            jFrame.show();
-            return NumberValue.ZERO;
-        });
-
         functions.put("random", (Value[] args) -> {
             Random random = new Random();
             return new NumberValue(random.nextInt((int) args[0].asNumber(), (int) args[1].asNumber()));
@@ -93,13 +78,10 @@ public class Functions {
         });
 
         functions.put("Window", (Value[] args) -> {
-            Stage stage = new Stage();
-            Pane pane = new Pane();
-            Scene scene = new Scene(pane, args[0].asNumber(), args[1].asNumber());
-            stage.setTitle(args[2].asString());
-            stage.setScene(scene);
-            stage.show();
-
+            JFrame jFrame = new JFrame(args[0].asString());
+            jFrame.setSize((int) args[1].asNumber(), (int) args[2].asNumber());
+            jFrame.setIconImage(new ImageIcon("C:\\Users\\Noutb\\Downloads\\Jellyfish\\src\\main\\resources\\logo.jpg").getImage());
+            jFrame.show();
             return NumberValue.ZERO;
         });
 
@@ -153,6 +135,15 @@ public class Functions {
                 throw new RuntimeException("Error creating file: " + e.getMessage());
             }
         });
+    }
+
+    private static JButton findButtonByText(String text) {
+        for (Component comp : window.getContentPane().getComponents()) {
+            if (comp instanceof JButton && ((JButton) comp).getText().equals(text)) {
+                return (JButton) comp;
+            }
+        }
+        return null;
     }
 
     public static boolean isExists(String key) {
