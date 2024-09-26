@@ -122,7 +122,9 @@ public final class Lexer {
         }
         final StringBuilder buffer = new StringBuilder();
         while (true) {
+
             final String text = buffer.toString();
+
             if (!OPERATORS.containsKey(text + current) && !text.isEmpty()) {
                 addToken(OPERATORS.get(text));
                 return;

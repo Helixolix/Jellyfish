@@ -21,7 +21,7 @@ public class BinaryExpression implements Expression {
         final Value value1 = expr1.eval();
         final Value value2 = expr2.eval();
 
-        final double number1 = expr1.eval().asNumber();
+        double number1 = expr1.eval().asNumber();
         final double number2 = expr2.eval().asNumber();
 
         if ((value1 instanceof StringValue) || (value1 instanceof ArrayValue)) {
@@ -46,6 +46,7 @@ public class BinaryExpression implements Expression {
             case '-': return new NumberValue(number1 - number2);
             case '*': return new NumberValue(number1 * number2);
             case '/': return new NumberValue(number1 / number2);
+            case '@': return new NumberValue(number1 += number2);
             case '+':
             default:
                 return new NumberValue(number1 + number2);

@@ -14,14 +14,17 @@ import java.util.Scanner;
 
 public class TestMain {
 
-    public static final String ANSI_RED = "\u001B[31m";
+    public static String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_WHITE = "\u001B[37m";
 
     public static Scanner scanner1;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         String input;
 
         while (true) {
+            System.out.println("Введите путь к jfl файлу:");
+
             scanner1 = new Scanner(System.in);
             String path = scanner1.nextLine();
 
@@ -29,17 +32,13 @@ public class TestMain {
                 break;
             }
 
-            if (args.length > 0) {
-                try {
-                    input = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
-                } catch (IOException e) {
-                    System.out.println(ANSI_RED + "Ошибка при чтении файла: " + e.getMessage());
-                    return;
-                }
-            } else {
-                System.out.println(ANSI_RED + "Ошибка: Не указан путь к .jfl файлу.");
-                return;
+            try {
+                input = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
+            } catch (IOException e) {
+
+                throw new RuntimeException(e);
             }
+
 
             try {
                 List<Token> tokens = new Lexer(input).tokenize();
@@ -47,6 +46,7 @@ public class TestMain {
                 program.execute();
             } catch (Exception e) {
                 System.out.println(ANSI_RED + "Ошибка при выполнении программы: " + e.getMessage());
+                break;
             }
         }
     }

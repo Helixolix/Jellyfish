@@ -29,39 +29,6 @@ public class Functions {
 
     static {
         functions = new HashMap<>();
-        functions.put("sin", args -> {
-            if (args.length != 1) throw new RuntimeException("One arg expected");
-            return new NumberValue(Math.sin(args[0].asNumber()));
-        });
-
-        functions.put("cos", (Value... args) -> {
-            if (args.length != 1) throw new RuntimeException("One arg expected");
-            return new NumberValue(Math.cos(args[0].asNumber()));
-        });
-        functions.put("echo", args -> {
-            for (Value arg : args) {
-                System.out.println(arg.asString());
-            }
-            return NumberValue.ZERO;
-        });
-
-        functions.put("Introduce_Line", (Value[] args) -> {
-            try(Scanner scanner = new Scanner(System.in)) {
-                String a = scanner.nextLine();
-                return new StringValue(a);
-            }
-        });
-
-        functions.put("Introduce_Int", (Value[] args) -> {
-            Scanner scanner = new Scanner(System.in);
-                int a = scanner.nextInt();
-                return new NumberValue(a);
-        });
-
-        functions.put("random", (Value[] args) -> {
-            Random random = new Random();
-            return new NumberValue(random.nextInt((int) args[0].asNumber(), (int) args[1].asNumber()));
-        });
 
         functions.put("Length", (Value[] args) -> {
             int a = args[0].asString().length();
@@ -77,63 +44,8 @@ public class Functions {
             }
         });
 
-        functions.put("Window", (Value[] args) -> {
-            JFrame jFrame = new JFrame(args[0].asString());
-            jFrame.setSize((int) args[1].asNumber(), (int) args[2].asNumber());
-            jFrame.setIconImage(new ImageIcon("C:\\Users\\Noutb\\Downloads\\Jellyfish\\src\\main\\resources\\logo.jpg").getImage());
-            jFrame.show();
-            return NumberValue.ZERO;
-        });
-
-        functions.put("Write_File", (Value[] args) -> {
-            StringValue path = (StringValue) args[0];
-            StringValue content = (StringValue) args[1];
-            try {
-                Files.write(Paths.get(path.asString()), content.asString().getBytes(StandardCharsets.UTF_8));
-                return NumberValue.ZERO;
-            } catch (IOException e) {
-                throw new RuntimeException("Error writing file: " + e.getMessage());
-            }
-        });
-
-        functions.put("Read_File", (Value[] args) -> {
-            StringValue path = (StringValue) args[0];
-            try {
-                String content = Files.readString(Paths.get(path.asString()));
-                return new StringValue(content);
-            } catch (IOException e) {
-                throw new RuntimeException("Error reading file: " + e.getMessage());
-            }
-        });
-
         functions.put("Throw", (Value[] args) -> {
            throw new RuntimeException(args[0].asString());
-        });
-
-        functions.put("To_Int", (Value[] args) -> {
-            if (args.length != 1) throw new RuntimeException("One arg expected");
-            StringValue str = (StringValue) args[0];
-            try {
-                int number = Integer.parseInt(str.asString());
-                return new NumberValue(number);
-            } catch (NumberFormatException e) {
-                throw new RuntimeException("Invalid string format for integer conversion: " + e.getMessage());
-            }
-        });
-
-        functions.put("To_String", (Value[] args) -> {
-            if (args.length != 1) throw new RuntimeException("One arg expected");
-            return new StringValue(String.valueOf(args[0].asNumber()));
-        });
-
-        functions.put("create_New_File", (Value[] args) -> {
-            StringValue path = (StringValue) args[0];
-            try {
-                Files.createFile(Paths.get(path.asString()));
-                return NumberValue.ZERO;
-            } catch (IOException e) {
-                throw new RuntimeException("Error creating file: " + e.getMessage());
-            }
         });
     }
 

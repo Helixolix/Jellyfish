@@ -3,7 +3,10 @@ package com.helixo.syntax.expression.impl;
 import com.helixo.syntax.expression.Expression;
 import com.helixo.syntax.value.NumberValue;
 import com.helixo.syntax.value.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
 public class UnaryExpression implements Expression {
     private Expression expr1;
     private char operation;

@@ -4,8 +4,11 @@ import com.helixo.syntax.expression.Expression;
 import com.helixo.syntax.value.NumberValue;
 import com.helixo.syntax.value.StringValue;
 import com.helixo.syntax.value.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-
+@Data
+@AllArgsConstructor
 public final class ValueExpression implements Expression {
 
     private final Value value;

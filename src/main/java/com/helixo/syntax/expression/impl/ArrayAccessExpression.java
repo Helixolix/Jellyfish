@@ -3,18 +3,17 @@ package com.helixo.syntax.expression.impl;
 import com.helixo.syntax.expression.Expression;
 import com.helixo.syntax.value.ArrayValue;
 import com.helixo.syntax.value.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
+@AllArgsConstructor
 public class ArrayAccessExpression implements Expression {
 
     private final String variable;
     private final List<Expression> indices;
-
-    public ArrayAccessExpression(String variable, List<Expression> indices) {
-        this.variable = variable;
-        this.indices = indices;
-    }
 
     @Override
     public Value eval() {
@@ -42,10 +41,5 @@ public class ArrayAccessExpression implements Expression {
         }else {
             throw new RuntimeException("Array expected");
         }
-    }
-
-    @Override
-    public String toString() {
-        return "";
     }
 }

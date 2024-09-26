@@ -2,11 +2,15 @@ package com.helixo.syntax.expression.impl;
 
 import com.helixo.syntax.value.NumberValue;
 import com.helixo.syntax.value.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+@Data
+@AllArgsConstructor
 public class VariabletExpression {
     private static Map<String, Value> variables;
     private static final NumberValue ZERO = new NumberValue(0);
