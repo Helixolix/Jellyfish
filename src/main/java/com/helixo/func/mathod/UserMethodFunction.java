@@ -1,5 +1,6 @@
-package com.helixo.lib;
+package com.helixo.func.mathod;
 
+import com.helixo.func.Function;
 import com.helixo.syntax.statement.Statement;
 import com.helixo.syntax.statement.impl.exception.ReturnStatement;
 import com.helixo.syntax.value.NumberValue;

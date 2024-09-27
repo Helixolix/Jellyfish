@@ -1,11 +1,10 @@
 package com.helixo.syntax.expression.impl;
 
-import com.helixo.lib.Function;
-import com.helixo.lib.Functions;
-import com.helixo.lib.UserMethodFunction;
+import com.helixo.func.Function;
+import com.helixo.func.Functions;
+import com.helixo.func.mathod.UserMethodFunction;
 import com.helixo.syntax.expression.Expression;
 import com.helixo.syntax.value.Value;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.ArrayList;

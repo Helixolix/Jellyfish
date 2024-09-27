@@ -1,9 +1,8 @@
 package com.helixo.libjfl.jfl.system;
 
-import com.helixo.lib.Function;
-import com.helixo.lib.Functions;
+import com.helixo.func.Function;
+import com.helixo.func.Functions;
 import com.helixo.libjfl.Module;
-import com.helixo.syntax.expression.impl.VariabletExpression;
 import com.helixo.syntax.value.NumberValue;
 import com.helixo.syntax.value.StringValue;
 import com.helixo.syntax.value.Value;

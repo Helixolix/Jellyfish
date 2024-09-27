@@ -1,35 +1,22 @@
-package com.helixo.libjfl.jfl.util;
+package com.helixo.libjfl.jfl.io.errors;
 
 import com.helixo.func.Function;
 import com.helixo.func.Functions;
 import com.helixo.libjfl.Module;
 import com.helixo.syntax.value.NumberValue;
-import com.helixo.syntax.value.StringValue;
 import com.helixo.syntax.value.Value;
 
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleFunction;
 import java.util.function.DoubleUnaryOperator;
 
-public class convert implements Module {
+public class error implements Module {
     private static final DoubleFunction<NumberValue> doubleToNumber = v -> new NumberValue(v);
 
     @Override
     public void init() {
-        Functions.set("To_Int", args -> {
-            if (args.length != 1) throw new RuntimeException("One arg expected");
-            StringValue str = (StringValue) args[0];
-            try {
-                int number = Integer.parseInt(str.asString());
-                return new NumberValue(number);
-            } catch (NumberFormatException e) {
-                throw new RuntimeException("Invalid string format for integer conversion: " + e.getMessage());
-            }
-        });
-
-        Functions.set("To_String", (Value[] args) -> {
-            if (args.length != 1) throw new RuntimeException("One arg expected");
-            return new StringValue(String.valueOf(args[0].asNumber()));
+        Functions.set("Error", (Value[] args) -> {
+            throw new RuntimeException(args[0].asString());
         });
     }
 

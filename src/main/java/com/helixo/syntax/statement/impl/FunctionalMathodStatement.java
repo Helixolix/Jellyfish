@@ -1,7 +1,7 @@
 package com.helixo.syntax.statement.impl;
 
-import com.helixo.lib.Functions;
-import com.helixo.lib.UserMethodFunction;
+import com.helixo.func.Functions;
+import com.helixo.func.mathod.UserMethodFunction;
 import com.helixo.syntax.statement.Statement;
 
 import java.util.List;
