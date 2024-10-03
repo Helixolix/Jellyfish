@@ -2,7 +2,7 @@ package com.helixo.syntax.expression.impl;
 
 import com.helixo.func.Function;
 import com.helixo.func.Functions;
-import com.helixo.func.mathod.UserMethodFunction;
+import com.helixo.mathod.UserMethodFunction;
 import com.helixo.syntax.expression.Expression;
 import com.helixo.syntax.value.Value;
 import lombok.Data;

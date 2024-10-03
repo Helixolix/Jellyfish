@@ -8,7 +8,7 @@
     <artifactId>DerlaryLenguage</artifactId>
     <version>1.0-SNAPSHOT</version>
      <build>
-        <resources>
+        <resources>g
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>

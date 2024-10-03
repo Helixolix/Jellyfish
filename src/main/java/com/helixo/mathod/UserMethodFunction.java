@@ -1,4 +1,4 @@
-package com.helixo.func.mathod;
+package com.helixo.mathod;
 
 import com.helixo.func.Function;
 import com.helixo.syntax.statement.Statement;
